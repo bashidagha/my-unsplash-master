@@ -30,7 +30,7 @@ export default function Home() {
               </svg>
             </div>
 
-            <button onClick={() => setShowAddPhoto(true)}>Add a photo</button>
+            <button className="mybtn" onClick={() => setShowAddPhoto(true)}>Add a photo</button>
           </div>
         </nav>
 
