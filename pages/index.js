@@ -1,10 +1,22 @@
 import Head from "next/head";
 import { useContext, useState } from "react";
 import AddPhoto from "../components/AddPhoto";
-import uiContext from "../store/ui-context";
+import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
+
+  const images = [
+    "https://picsum.photos/200/300?image=1050",
+    "https://picsum.photos/400/400?image=1039",
+    "https://picsum.photos/400/400?image=1080",
+    "https://picsum.photos/200/200?image=997",
+    "https://picsum.photos/500/400?image=287",
+    "https://picsum.photos/400/500?image=955",
+    "https://picsum.photos/200/300?image=916",
+    "https://picsum.photos/300/300?image=110",
+    "https://picsum.photos/300/300?image=206",
+  ];
 
   return (
     <>
@@ -30,9 +42,23 @@ export default function Home() {
               </svg>
             </div>
 
-            <button className="mybtn" onClick={() => setShowAddPhoto(true)}>Add a photo</button>
+            <button className="mybtn" onClick={() => setShowAddPhoto(true)}>
+              Add a photo
+            </button>
           </div>
         </nav>
+
+        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 450: 2, 800: 3, 1200:4, 1400:5 }} className="gallery">
+          <Masonry columnsCount={4} gutter="10px">
+            {images.map((image, i) => (
+              <img
+                key={i}
+                src={image}
+                alt=""
+              />
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
 
         <div className="footer__owner">
           created by <a href="https://github.com/bashidagha">bashidagha</a> -
@@ -40,7 +66,7 @@ export default function Home() {
         </div>
       </div>
 
-      {showAddPhoto && <AddPhoto setShowAddPhoto={setShowAddPhoto}/>}
+      {showAddPhoto && <AddPhoto setShowAddPhoto={setShowAddPhoto} />}
     </>
   );
 }

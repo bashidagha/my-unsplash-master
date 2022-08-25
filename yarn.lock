@@ -1999,6 +1999,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
+"react-responsive-masonry@^2.1.5":
+  "integrity" "sha512-qXoE8Whrgw2smNRKAcX2z+kZDH7uiii1uyJ92cMOpe59CGdMbj7qbT9I9540GKxFLVUYr9zlU4n4lCfsfy+09A=="
+  "resolved" "https://registry.npmjs.org/react-responsive-masonry/-/react-responsive-masonry-2.1.5.tgz"
+  "version" "2.1.5"
+
 "react-toastify@^9.0.8":
   "integrity" "sha512-EwM+teWt49HSHx+67qI08yLAW1zAsBxCXLCsUfxHYv1W7/R3ZLhrqKalh7j+kjgPna1h5LQMSMwns4tB4ww2yQ=="
   "resolved" "https://registry.npmjs.org/react-toastify/-/react-toastify-9.0.8.tgz"

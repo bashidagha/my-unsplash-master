@@ -27,7 +27,7 @@ a {
 }
 
 .footer__owner {
-  position: absolute;
+  position: fixed;
   bottom: 1rem;
   width: 100%;
   text-align: center;
@@ -94,6 +94,29 @@ nav {
   outline: none;
   border: none;
   color: white;
+}
+
+.btn__cancel {
+  font-size: 16px;
+  line-height: 22px;
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0.7rem 1rem;
+  color: #bdbdbd;
+}
+
+.gallery {
+  margin-top: 4rem;
+  width: 100%;
+}
+
+.gallery img{
+  border-radius: 16px;
+  max-height: 50rem;
+  object-fit: cover;
+  width: 100%;
+  display: block;
 }
 
 @media (min-width: 700px) {
