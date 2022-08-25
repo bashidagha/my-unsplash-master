@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500;700&display=swap");
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Noto Sans", sans-serif;
+  background: white;
+  font-weight: 500;
+}
+
+img {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+.footer__owner {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  color: #a9a9a9;
+}
+
+nav {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+  width: 95%;
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.nav__navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.nav__search {
+  position: relative;
+}
+
+.nav__search svg {
+  fill: #bdbdbd;
+  width: 1.7rem;
+  height: 1.7rem;
+  position: absolute;
+  left: 1rem;
+  top: 0.8rem;
+}
+
+.nav__search input {
+  max-width: 30rem;
+  border: 1px solid #bdbdbd;
+  filter: drop-shadow(0px 1px 6px rgba(0, 0, 0, 0.1));
+  border-radius: 12px;
+  padding: 0.8rem 0.5rem 0.8rem 3rem;
+}
+
+.nav__search input:focus-visible {
+  outline: none;
+}
+
+.nav__navbar button {
+  background: #3db46d;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 22px;
+  padding: 0.7rem 1rem;
+  outline: none;
+  border: none;
+  color: white;
+}
+
+@media (min-width: 700px) {
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav__navbar {
+    width: 100%;
+    margin-top: 0;
+  }
+}
