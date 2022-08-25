@@ -1,22 +1,23 @@
 import Head from "next/head";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AddPhoto from "../components/AddPhoto";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
+import { onValue, ref, set } from "firebase/database";
+import { database } from "../helper/DatabaseHelper";
 
 export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
 
-  const images = [
-    "https://picsum.photos/200/300?image=1050",
-    "https://picsum.photos/400/400?image=1039",
-    "https://picsum.photos/400/400?image=1080",
-    "https://picsum.photos/200/200?image=997",
-    "https://picsum.photos/500/400?image=287",
-    "https://picsum.photos/400/500?image=955",
-    "https://picsum.photos/200/300?image=916",
-    "https://picsum.photos/300/300?image=110",
-    "https://picsum.photos/300/300?image=206",
-  ];
+  const [images, setImages] = useState(null);
+
+  useEffect(() => {
+    const starCountRef = ref(database, "/images");
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      // console.log(data)
+      setImages(data);
+    });
+  }, []);
 
   return (
     <>
@@ -48,15 +49,15 @@ export default function Home() {
           </div>
         </nav>
 
-        <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 450: 2, 800: 3, 1200:4, 1400:5 }} className="gallery">
+        <ResponsiveMasonry
+          columnsCountBreakPoints={{ 350: 1, 450: 2, 800: 3, 1200: 4, 1400: 5 }}
+          className="gallery"
+        >
           <Masonry columnsCount={4} gutter="10px">
-            {images.map((image, i) => (
-              <img
-                key={i}
-                src={image}
-                alt=""
-              />
-            ))}
+            {images &&
+              images.map((image, i) => (
+                <img key={i} src={image.url} alt={image.label} />
+              ))}
           </Masonry>
         </ResponsiveMasonry>
 
