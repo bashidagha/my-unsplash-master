@@ -5,19 +5,18 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { onValue, ref, set } from "firebase/database";
 import { database } from "../helper/DatabaseHelper";
 
-function Home({ images }) {
+export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
 
-  // const [images, setImages] = useState(null);
+  const [images, setImages] = useState(null);
 
-  // useEffect(() => {
-  //   const starCountRef = ref(database, "/images");
-  //   onValue(starCountRef, (snapshot) => {
-  //     const data = snapshot.val();
-  //     // console.log(data)
-  //     setImages(data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    const starCountRef = ref(database, "/images");
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      setImages(data);
+    });
+  }, []);
 
   return (
     <>
@@ -71,20 +70,3 @@ function Home({ images }) {
     </>
   );
 }
-
-// This gets called on every request
-export async function getServerSideProps(context) {
-  // Fetch data from external API
-  let images = [];
-
-  const starCountRef = await ref(database, "/images");
-  await onValue(starCountRef, (snapshot) => {
-    images.push(snapshot.val());
-    console.log(images);
-  });
-
-  // Pass data to the page via props
-  return { props: { images } };
-}
-
-export default Home;
