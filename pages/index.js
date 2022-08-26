@@ -19,7 +19,7 @@ export default function Home() {
   const [shownImages, setShownImages] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const searchRef = useRef();
+  const searchRef = useRef(); 
 
   function GetFromDatabase() {
     setIsLoading(true);
