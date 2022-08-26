@@ -98,7 +98,7 @@ export default function Home() {
           >
             <Masonry columnsCount={4} gutter="10px">
               {shownImages.map((image, i) => (
-                <div className="gallery__item">
+                <div className="gallery__item" key={image.url + i}>
                   <img key={i} src={image.url} alt={image.label} />
                   <div>
                     <p>{image.label}</p>
