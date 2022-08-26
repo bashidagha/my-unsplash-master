@@ -18,7 +18,7 @@ const AddPhoto = (props) => {
       url: urlRef.current.value,
     });
     closeModalHandler();
-    props.setPhotoAdded((prevState) => !prevState);
+    props.setUpdatePhotos((prevState) => !prevState);
   };
 
   return (

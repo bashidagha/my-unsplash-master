@@ -27,9 +27,9 @@ export default function Home() {
         setImages(data.filter((image) => image.label !== fil));
         setIsLoading(false);
       } else {
-        setImages(data.reverse());
+        setImages(data);
         setGalleryLength(data.length);
-        setShownImages(data.reverse());
+        setShownImages(data);
         setIsLoading(false);
       }
     });
@@ -100,7 +100,13 @@ export default function Home() {
           >
             <Masonry columnsCount={4} gutter="10px">
               {shownImages.map((image, i) => (
-                <img key={i} src={image.url} alt={image.label} />
+                <div className="gallery__item">
+                  <img key={i} src={image.url} alt={image.label} />
+                  <div>
+                    <p>{image.label}</p>
+                    <button>delete</button>
+                  </div>
+                </div>
               ))}
             </Masonry>
           </ResponsiveMasonry>
@@ -115,7 +121,7 @@ export default function Home() {
         <AddPhoto
           setShowAddPhoto={setShowAddPhoto}
           length={galleryLength}
-          setPhotoAdded={setUpdatePhotos}
+          setUpdatePhotos={setUpdatePhotos}
         />
       )}
     </>
