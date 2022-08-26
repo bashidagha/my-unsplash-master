@@ -96,6 +96,10 @@ nav {
   color: white;
 }
 
+.mybtn__danger {
+  background: #eb5757;
+}
+
 .btn__cancel {
   font-size: 16px;
   line-height: 22px;

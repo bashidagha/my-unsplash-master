@@ -5,9 +5,12 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { onValue, ref } from "firebase/database";
 import { database } from "../helper/DatabaseHelper";
 import Loading from "../components/Loading";
+import DeletePhoto from "../components/DeletePhoto";
 
 export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
+  const [showDeletePhoto, setDeletePhoto] = useState(false);
+
   const [updatePhotos, setUpdatePhotos] = useState(false);
   const [galleryLength, setGalleryLength] = useState(0);
   const [images, setImages] = useState(null);
@@ -16,22 +19,17 @@ export default function Home() {
 
   const searchRef = useRef();
 
-  function GetFromDatabase(fil) {
+  function GetFromDatabase() {
     setIsLoading(true);
 
     const imagesRef = ref(database, "/images");
     onValue(imagesRef, (snapshot) => {
       const data = snapshot.val();
 
-      if (fil) {
-        setImages(data.filter((image) => image.label !== fil));
-        setIsLoading(false);
-      } else {
-        setImages(data);
-        setGalleryLength(data.length);
-        setShownImages(data);
-        setIsLoading(false);
-      }
+      setImages(data);
+      setGalleryLength(data.length);
+      setShownImages(data);
+      setIsLoading(false);
     });
   }
 
@@ -104,7 +102,7 @@ export default function Home() {
                   <img key={i} src={image.url} alt={image.label} />
                   <div>
                     <p>{image.label}</p>
-                    <button>delete</button>
+                    <button onClick={() => setDeletePhoto(true)}>delete</button>
                   </div>
                 </div>
               ))}
@@ -121,6 +119,13 @@ export default function Home() {
         <AddPhoto
           setShowAddPhoto={setShowAddPhoto}
           length={galleryLength}
+          setUpdatePhotos={setUpdatePhotos}
+        />
+      )}
+
+      {showDeletePhoto && (
+        <DeletePhoto
+          setDeletePhoto={setDeletePhoto}
           setUpdatePhotos={setUpdatePhotos}
         />
       )}
