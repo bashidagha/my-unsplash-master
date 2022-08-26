@@ -11,8 +11,10 @@ export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
   const [showDeletePhoto, setDeletePhoto] = useState(false);
 
+  const [idToBeDelete, setIdToBeDelete] = useState(0);
+  const [imageObject, setImageObject] = useState(0);
+
   const [updatePhotos, setUpdatePhotos] = useState(false);
-  const [galleryLength, setGalleryLength] = useState(0);
   const [images, setImages] = useState(null);
   const [shownImages, setShownImages] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,11 +27,11 @@ export default function Home() {
     const imagesRef = ref(database, "/images");
     onValue(imagesRef, (snapshot) => {
       const data = snapshot.val();
-
-      setImages(data);
-      setGalleryLength(data.length);
-      setShownImages(data);
+      setImageObject(data);
+      setImages(Object.values(data));
+      setShownImages(Object.values(data));
       setIsLoading(false);
+      console.log(Object.keys(data))
     });
   }
 
@@ -47,8 +49,6 @@ export default function Home() {
         images.filter((image) => image.label.includes(searchRef.current.value))
       );
     }
-
-    console.log(images);
   };
 
   return (
@@ -97,12 +97,19 @@ export default function Home() {
             className="gallery"
           >
             <Masonry columnsCount={4} gutter="10px">
-              {shownImages.map((image, i) => (
-                <div className="gallery__item" key={image.url + i}>
-                  <img key={i} src={image.url} alt={image.label} />
+              {shownImages.map((image) => (
+                <div className="gallery__item" key={image.id}>
+                  <img src={image.url} alt={image.label} />
                   <div>
                     <p>{image.label}</p>
-                    <button onClick={() => setDeletePhoto(true)}>delete</button>
+                    <button
+                      onClick={() => {
+                        setDeletePhoto(true);
+                        setIdToBeDelete(image.id);
+                      }}
+                    >
+                      delete
+                    </button>
                   </div>
                 </div>
               ))}
@@ -118,7 +125,6 @@ export default function Home() {
       {showAddPhoto && (
         <AddPhoto
           setShowAddPhoto={setShowAddPhoto}
-          length={galleryLength}
           setUpdatePhotos={setUpdatePhotos}
         />
       )}
@@ -127,6 +133,8 @@ export default function Home() {
         <DeletePhoto
           setDeletePhoto={setDeletePhoto}
           setUpdatePhotos={setUpdatePhotos}
+          id={idToBeDelete}
+          imageObject={imageObject}
         />
       )}
     </>

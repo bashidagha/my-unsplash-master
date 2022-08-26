@@ -1,4 +1,4 @@
-import { ref, set } from "firebase/database";
+import { push, ref, set } from "firebase/database";
 import React, { useRef } from "react";
 import { database } from "../helper/DatabaseHelper";
 import styles from "./Gallery.module.css";
@@ -13,10 +13,17 @@ const AddPhoto = (props) => {
 
   const addPhotoHandler = (e) => {
     e.preventDefault();
-    set(ref(database, "images/" + props.length), {
+
+    const a = new Date();
+
+    const postListRef = ref(database, "images/");
+    const newPostRef = push(postListRef);
+    set(newPostRef, {
+      id: a.getTime(),
       label: labelRef.current.value,
       url: urlRef.current.value,
     });
+
     closeModalHandler();
     props.setUpdatePhotos((prevState) => !prevState);
   };

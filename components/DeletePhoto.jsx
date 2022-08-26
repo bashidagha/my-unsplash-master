@@ -16,6 +16,16 @@ const DeletePhoto = (props) => {
     e.preventDefault();
 
     if (passwordRef.current.value === process.env.NEXT_PUBLIC_deletepassword) {
+      let indexDeleted = 0;
+      Object.values(props.imageObject).map((image, i) => {
+        if (image.id === props.id) {
+          indexDeleted = i;
+        }
+      });
+
+      let idDeleted = Object.keys(props.imageObject)[indexDeleted];
+      set(ref(database, "images/" + idDeleted), null);
+
       closeModalHandler();
       props.setUpdatePhotos((prevState) => !prevState);
     } else {
