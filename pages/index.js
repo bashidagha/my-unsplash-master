@@ -1,22 +1,57 @@
 import Head from "next/head";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddPhoto from "../components/AddPhoto";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref } from "firebase/database";
 import { database } from "../helper/DatabaseHelper";
+import Loading from "../components/Loading";
 
 export default function Home() {
   const [showAddPhoto, setShowAddPhoto] = useState(false);
-
+  const [updatePhotos, setUpdatePhotos] = useState(false);
+  const [galleryLength, setGalleryLength] = useState(0);
   const [images, setImages] = useState(null);
+  const [shownImages, setShownImages] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const searchRef = useRef();
+
+  function GetFromDatabase(fil) {
+    setIsLoading(true);
+
+    const imagesRef = ref(database, "/images");
+    onValue(imagesRef, (snapshot) => {
+      const data = snapshot.val();
+
+      if (fil) {
+        setImages(data.filter((image) => image.label !== fil));
+        setIsLoading(false);
+      } else {
+        setImages(data.reverse());
+        setGalleryLength(data.length);
+        setShownImages(data.reverse());
+        setIsLoading(false);
+      }
+    });
+  }
 
   useEffect(() => {
-    const starCountRef = ref(database, "/images");
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      setImages(data);
-    });
-  }, []);
+    GetFromDatabase();
+  }, [updatePhotos]);
+
+  const searchPhotoHandler = (e) => {
+    e.preventDefault();
+
+    if (searchRef.current.value === "" || searchRef.current.value.length > 10) {
+      setShownImages(images);
+    } else {
+      setShownImages(
+        images.filter((image) => image.label.includes(searchRef.current.value))
+      );
+    }
+
+    console.log(images);
+  };
 
   return (
     <>
@@ -31,7 +66,9 @@ export default function Home() {
           <img src="/my_unsplash_logo.svg" alt="logo"></img>
           <div className="nav__navbar">
             <div className="nav__search">
-              <input placeholder="Search by name"></input>
+              <form onSubmit={searchPhotoHandler}>
+                <input placeholder="Search by name" ref={searchRef}></input>
+              </form>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="48"
@@ -48,25 +85,39 @@ export default function Home() {
           </div>
         </nav>
 
-        <ResponsiveMasonry
-          columnsCountBreakPoints={{ 350: 1, 450: 2, 800: 3, 1200: 4, 1400: 5 }}
-          className="gallery"
-        >
-          <Masonry columnsCount={4} gutter="10px">
-            {images &&
-              images.map((image, i) => (
+        {isLoading && <Loading />}
+
+        {!isLoading && shownImages && (
+          <ResponsiveMasonry
+            columnsCountBreakPoints={{
+              350: 1,
+              450: 2,
+              800: 3,
+              1200: 4,
+              1400: 5,
+            }}
+            className="gallery"
+          >
+            <Masonry columnsCount={4} gutter="10px">
+              {shownImages.map((image, i) => (
                 <img key={i} src={image.url} alt={image.label} />
               ))}
-          </Masonry>
-        </ResponsiveMasonry>
-
+            </Masonry>
+          </ResponsiveMasonry>
+        )}
         <div className="footer__owner">
           created by <a href="https://github.com/bashidagha">bashidagha</a> -
           devChallenges.io
         </div>
       </div>
 
-      {showAddPhoto && <AddPhoto setShowAddPhoto={setShowAddPhoto} />}
+      {showAddPhoto && (
+        <AddPhoto
+          setShowAddPhoto={setShowAddPhoto}
+          length={galleryLength}
+          setPhotoAdded={setUpdatePhotos}
+        />
+      )}
     </>
   );
 }
